@@ -1,4 +1,4 @@
-# Simple Proxy Tester with Geolocation
+# Simple HTTP Proxy Tester with Geolocation support
 
 - accept single or multiple input 'IP:PORT' pair separated by space
 
