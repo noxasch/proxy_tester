@@ -41,13 +41,21 @@ def process_ip(proxy):
         geo_db_reader(proxy)
         test_proxy(proxy)
     else: 
-        print('Invalide proxy:', proxy)
+        print('Invalid proxy:', proxy)
 
 if __name__ == "__main__":
     input_args = argv[1:]
     for item in input_args:
         if item.endswith('.txt'):
             print('This is a text file')
+            data_string = ''
+            with open(item, 'r') as myfile:
+                data_string = myfile.read()
+            if data_string:
+                data_string = data_string.replace('\n', ' ')
+                data_array = data_string.split(' ')
+                data_array = list(dict.fromkeys(data_array))
+                for item in data_array:
+                    process_ip(item)
         else:
             process_ip(item)
-    
