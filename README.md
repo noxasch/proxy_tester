@@ -2,7 +2,7 @@
 
 - accept single or multiple input 'IP:PORT' pair separated by space
 
-## Instruction:
+## Usage:
 
 1. Create python venv
 2. Install dependencies from requirements.txt
