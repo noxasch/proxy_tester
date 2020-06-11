@@ -6,19 +6,18 @@ from sys import argv
 
 # PROXY = '207.246.78.249:80'
 # TODO: 
-# - accept custom url
-# - accept custom header
-# - output result to file
+# - [x] test local speed as baseline
+# - [ ] accept custom url
+# - [ ] accept custom header
+# - [ ] output result to file
 
 PING_URL = 'https://www.google.com'
 HEADER = ''
 
 def test_proxy(proxy = None):
-    print('test proxy')
-    if not proxy:
-        proxies = {}
-    else:
-        proxies = {'http': proxy, 'https': proxy,}
+    print('testing proxy:', proxy)
+    if not proxy: proxies = {}
+    else: proxies = {'http': proxy, 'https': proxy,}
     try:
         res = requests.get(PING_URL, proxies=proxies, timeout=60)
         if (res.status_code == 200):
@@ -66,25 +65,35 @@ def file_handler(input_file):
         data_string = data_string.replace('\n', ' ')
         data_array = data_string.split(' ')
         data_array = list(dict.fromkeys(data_array))
-        # print(f'Processing {len(data_array)} unique proxy...')
+        print(f'Processing {len(data_array)} unique proxy...')
         for item in data_array:
             result = process_ip(item)
             if 'invalid' not in result:
                validated.append(result)
         return validated
 
+def test_local():
+    status = {'proxy': None}
+    status.update(test_proxy())
+    return status
+
 def generate_report(result = []):
     for item in result:
         print(item)
 
-if __name__ == "__main__":
-    input_args = argv[1:]
 
-    for item in input_args:
-        if item.endswith('.txt'):
-            print('This is a text file')
-            result = file_handler(item)
-            generate_report(result)
-        else:
-            print('Processing')
+if __name__ == "__main__":
+    try:
+        input_args = argv[1:]
+        result = []
+        result.append(test_local())
+        for item in input_args:
+            if item.endswith('.txt'):
+                print('This is a text file')
+                result.extend(file_handler(item))
+                generate_report(result)
+            else:
+                print('Processing')
             print(process_ip(item))
+    except Exception as err:
+        print(traceback.format_exc())

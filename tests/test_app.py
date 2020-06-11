@@ -11,7 +11,7 @@ class Test(unittest.TestCase):
         mock_get.return_value.elapsed.total_seconds.return_value = 1
         self.assertEqual(app.test_proxy('207.246.78.234:80'), {'working': True, 'response_time': 1})
         mock_get.side_effect = Exception('Connection Error')
-        self.assertEqual(app.test_proxy('207.246.78.234:80'), { 'working': False, 'response_time': None })
+        self.assertEqual(app.test_proxy('207.246.78.234:80'), {'working': False, 'response_time': None })
 
     def test_is_valid(self):
         self.assertTrue(app.is_valid('207.246.78.249:80'))
